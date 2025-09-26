@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:task/Screens/profile_page.dart';
+import 'package:task/presentation/profile_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

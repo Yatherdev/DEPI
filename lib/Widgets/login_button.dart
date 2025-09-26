@@ -12,24 +12,6 @@ class LoginButton extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        SizedBox(
-          width: double.infinity,
-          child: ElevatedButton(
-            onPressed: onPressed,
-            style: ElevatedButton.styleFrom(
-              padding: EdgeInsets.symmetric(vertical: 16),
-              backgroundColor: Colors.green.withOpacity(.7 ),
-              foregroundColor: Colors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
-              ),
-            ),
-            child: Text(
-              "Login",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-            ),
-          ),
-        ),
         Padding(
           padding: const EdgeInsets.all(30),
           child: Text("Or Login With"),
@@ -48,44 +30,28 @@ class LoginButton extends StatelessWidget {
             GoogleAuthButton(
               onPressed: () {},
               style: AuthButtonStyle(
-                buttonType: AuthButtonType.icon,
-              ),
-            ),
-            AppleAuthButton(
-              onPressed: () {},
-              style: AuthButtonStyle(
-                buttonType: AuthButtonType.icon,
-              ),
-            ),
-            FacebookAuthButton(
-              onPressed: () {},
-              style: AuthButtonStyle(
+                splashColor: Colors.yellow,
                 buttonType: AuthButtonType.icon,
               ),
             ),
             MicrosoftAuthButton(
               onPressed: () {},
               style: AuthButtonStyle(
+                splashColor: Colors.green,
                 buttonType: AuthButtonType.icon,
               ),
             ),
-            TwitterAuthButton(
+            FacebookAuthButton(
               onPressed: () {},
               style: AuthButtonStyle(
+                splashColor: Colors.blue,
                 buttonType: AuthButtonType.icon,
               ),
             ),
+
           ],
         ),
-        Padding(
-          padding: const EdgeInsets.all(10),
-          child: Row(crossAxisAlignment: CrossAxisAlignment.center,mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text("Don't have an account?"),
-              TextButton(onPressed: () {}, child: Text("Sign Up")),
-            ],
-          ),
-        ),
+
       ],
     );
   }
