@@ -12,7 +12,6 @@ class CustomTextFormField extends StatefulWidget {
 
   final TextInputType keyboardType;
 
-  final AutovalidateMode autovalidateMode;
 
   final String? Function(String?) validator;
 
@@ -25,7 +24,6 @@ class CustomTextFormField extends StatefulWidget {
     required this.isPassword,
     required this.keyboardType,
     required this.validator,
-    required this.autovalidateMode,
   });
 
   @override

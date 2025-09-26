@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:task/Core/custom_color.dart';
 
 class CustomButton extends StatelessWidget {
-  const CustomButton({super.key, required this.onPressed});
+  const CustomButton({super.key, required this.onPressed, required this.child});
 
   final VoidCallback onPressed;
-
+  final Widget child ;
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -21,11 +21,8 @@ class CustomButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(20),
           ),
         ),
-        child: Text(
-          "Login",
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+        child: child,
         ),
-      ),
     );
   }
 }

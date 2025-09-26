@@ -1,12 +1,14 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:task/presentation/signup_page.dart';
-
-import '../Widgets/custom_button.dart';
-import '../Widgets/custom_text_form_field.dart';
-import '../Widgets/gradiant_scaffold.dart';
-import '../Widgets/login_button.dart';
-import 'home_page.dart';
+import 'package:task/Core/custom_color.dart';
+import 'package:task/presentation/Auth/signup_page.dart';
+import '../../Widgets/custom_button.dart';
+import '../../Widgets/custom_text_form_field.dart';
+import '../../Widgets/gradiant_scaffold.dart';
+import '../../Widgets/login_button.dart';
+import 'forgetpassword_page.dart';
+import '../screens/home_page.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -20,20 +22,25 @@ class _LoginScreenState extends State<LoginScreen> {
 
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _auth = FirebaseAuth.instance;
   String email = '';
   String password = '';
 
-  void _login() {
-    if (_formKey.currentState!.validate()) {
-      _formKey.currentState!.save();
-      Navigator.pushAndRemoveUntil(
+   Future <void> _login() async{
+    try {
+      await _auth.signInWithEmailAndPassword(
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim(),
+      );
+      Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => HomePage()),
-        (Route<dynamic> rout) => false,
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Login Error: $e')),
       );
     }
-    print('Email : ${_emailController.text}');
-    print('Password : ${_passwordController.text}');
   }
 
   @override
@@ -42,7 +49,6 @@ class _LoginScreenState extends State<LoginScreen> {
     _emailController.dispose();
     _passwordController.dispose();
   }
-
   @override
   Widget build(BuildContext context) {
     return GradientScaffold(
@@ -78,7 +84,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         Text("Sign In",style: TextStyle(fontSize: 35,fontWeight: FontWeight.bold),),
                         SizedBox(height: 20,),
                         CustomTextFormField(
-                          autovalidateMode: AutovalidateMode.always,
                           controller: _emailController,
                           labelText: 'Email',
                           hintText: 'example@gmail.com',
@@ -96,7 +101,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         SizedBox(height: 20,),
                         CustomTextFormField(
-                          autovalidateMode: AutovalidateMode.always,
                           controller: _passwordController,
                           labelText: "Password",
                           hintText: "example123##",
@@ -112,8 +116,19 @@ class _LoginScreenState extends State<LoginScreen> {
                             }return null;
                           },
                         ),
-                        TextButton(onPressed: (){}, child: Text("Forgot password ?",textAlign: TextAlign.start,)),
-                        CustomButton(onPressed: _login,),
+                        TextButton(onPressed: (){
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=>                          ForgetPasswordPage()
+                          ));
+                          ForgetPasswordPage();
+                        }, child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Text("Forgot password ?",style: TextStyle(color: CustomColor.color2),),
+                          ],
+                        )),
+                        CustomButton(onPressed: _login, child: Text(
+                          "Login",
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),),
                       ],
                     ),
                   ),
@@ -123,11 +138,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   padding: const EdgeInsets.all(10),
                   child: Row(crossAxisAlignment: CrossAxisAlignment.center,mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text("Don't have an account?"),
+                      Text("Don't have an account?",style: TextStyle(color: CustomColor.color4),),
                       TextButton(
                           onPressed: () {
                         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>SignUpScreen()));
-                      }, child: Text("Sign Up")),
+                      }, child: Text("Sign Up",style: TextStyle(color: CustomColor.color3),)),
                     ],
                   ),
                 ),

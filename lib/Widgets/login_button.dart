@@ -1,5 +1,6 @@
 import 'package:auth_buttons/auth_buttons.dart';
 import 'package:flutter/material.dart';
+import 'package:task/Core/custom_color.dart';
 
 class LoginButton extends StatelessWidget {
   const LoginButton({super.key, required this.onPressed});
@@ -13,8 +14,8 @@ class LoginButton extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Padding(
-          padding: const EdgeInsets.all(30),
-          child: Text("Or Login With"),
+          padding: const EdgeInsets.all(8),
+          child: Text("Or",style: TextStyle(fontSize: 20,color: CustomColor.color4),),
         ),
         AuthButtonGroup(
           style: AuthButtonStyle(

@@ -1,12 +1,14 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:task/presentation/login_page.dart';
+import 'package:task/presentation/Auth/login_page.dart';
 
-import '../Widgets/custom_button.dart';
-import '../Widgets/custom_text_form_field.dart';
-import '../Widgets/gradiant_scaffold.dart';
-import '../Widgets/login_button.dart';
-import 'home_page.dart';
+import '../../Core/custom_color.dart';
+import '../../Widgets/custom_button.dart';
+import '../../Widgets/custom_text_form_field.dart';
+import '../../Widgets/gradiant_scaffold.dart';
+import '../../Widgets/login_button.dart';
+import '../screens/home_page.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -20,21 +22,29 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
+  final _nameController = TextEditingController();
+  final _auth = FirebaseAuth.instance;
+
   String email = '';
   String password = '';
 
-  void _Signup() {
-    if (_formKey.currentState!.validate()) {
-      _formKey.currentState!.save();
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (context) => HomePage()),
-        (Route<dynamic> rout) => false,
+  Future<void> _Signup() async {
+    try {
+      await _auth.createUserWithEmailAndPassword(
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim(),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Account created successfully!')),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Sign Up Error: $e')),
       );
     }
-    print('Email : ${_emailController.text}');
-    print('Password : ${_passwordController.text}');
   }
+
 
   @override
   void dispose() {
@@ -55,16 +65,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Lottie.asset(
-                  'Assets/animation/splash.json',
-                  width: 200,
+                SizedBox(
                   height: 200,
-                  fit: BoxFit.contain,
-                  onLoaded: (composition) {
-                    Future.delayed(composition.duration, () {
-                      Duration(seconds: 20);
-                    });
-                  },
+                  child: Lottie.asset(
+                    'Assets/animation/splash.json',
+                    fit: BoxFit.contain,
+                    onLoaded: (composition) {
+                      Future.delayed(composition.duration, () {
+                        Duration(seconds: 20);
+                      });
+                    },
+                  ),
                 ),
                 Container(
                   decoration: BoxDecoration(
@@ -78,8 +89,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         Text("Sign Up",style: TextStyle(fontSize: 35,fontWeight: FontWeight.bold),),
                         SizedBox(height: 20,),
                         CustomTextFormField(
-                          autovalidateMode: AutovalidateMode.always,
-                          controller: _emailController,
+                          controller: _nameController,
                           labelText: 'User Name',
                           hintText: 'Ahmed yasser',
                           prefixIcon: Icons.person,
@@ -94,7 +104,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                         SizedBox(height: 20,),
                         CustomTextFormField(
-                          autovalidateMode: AutovalidateMode.always,
                           controller: _emailController,
                           labelText: 'Email',
                           hintText: 'example@gmail.com',
@@ -112,7 +121,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                         SizedBox(height: 20,),
                         CustomTextFormField(
-                          autovalidateMode: AutovalidateMode.always,
                           controller: _passwordController,
                           labelText: "Password",
                           hintText: "example123##",
@@ -131,8 +139,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         SizedBox(height: 20,),
                         CustomTextFormField(
                           hintText: '',
-                          autovalidateMode: AutovalidateMode.always,
-                          controller: _passwordController,
+                          controller: _confirmPasswordController,
                           labelText: "Confirm Password",
                           prefixIcon: Icons.lock_outline,
                           isPassword: true,
@@ -146,7 +153,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             }return null;
                           },
                         ),
-                        CustomButton(onPressed: _Signup,),
+                        SizedBox(height: 20,),
+                        CustomButton(onPressed: _Signup, child: Text(
+                          "Sign Up",
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),),
+                        SizedBox(height: 20,),
+
                       ],
                     ),
                   ),
@@ -156,10 +168,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   padding: const EdgeInsets.all(10),
                   child: Row(crossAxisAlignment: CrossAxisAlignment.center,mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text("I have an account?"),
+                      Text("I have an account?",style: TextStyle(color: CustomColor.color4),),
                       TextButton(onPressed: () {
-                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>LoginScreen()));
-                      }, child: Text("Login")),
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginScreen()));
+                      }, child: Text("Login",style: TextStyle(color: CustomColor.color3),)),
                     ],
                   ),
                 ),
